@@ -11,3 +11,11 @@ video {
     max-height: 480px; /* Set a maximum height */
     border: 2px solid black;
 }
+
+#result {
+    margin-top: 20px;
+    font-weight: bold;
+    height: 50px;
+    line-height: 50px; /* Centra verticalmente il testo */
+}
+
