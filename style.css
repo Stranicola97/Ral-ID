@@ -16,6 +16,9 @@ video {
     margin-top: 20px;
     font-weight: bold;
     height: 50px;
-    line-height: 50px; /* Centra verticalmente il testo */
+    line-height: 50px; /* Center text vertically */
+    border: 1px solid black; /* Optional border */
+    background-color: white; /* Default background color */
 }
+
 

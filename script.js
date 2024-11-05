@@ -30,8 +30,9 @@ captureButton.addEventListener('click', () => {
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     const color = getDominantColor(imageData);
     
-    resultDiv.innerHTML = `Colore catturato: ${color}`;
-    console.log('Colore catturato:', color);
+    resultDiv.innerHTML = `Colore catturato: ${color}`; // Displays the captured color
+    resultDiv.style.backgroundColor = `rgb(${color})`; // Optional: sets the background color
+    console.log('Colore catturato:', color); // Logs the captured color
 });
 
 function getDominantColor(imageData) {
