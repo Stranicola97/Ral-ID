@@ -1,15 +1,6 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin-top: 20px;
-}
-
-video {
-    width: 100%;
-    height: auto;
-    max-width: 640px; /* Set a maximum width */
-    max-height: 480px; /* Set a maximum height */
-    border: 2px solid black;
 }
 
 #result {
