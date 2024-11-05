@@ -7,7 +7,7 @@ body {
 video {
     width: 100%;
     height: auto;
-    max-width: 600px; /* Limita la larghezza massima per non farlo diventare troppo grande */
-    border: 1px solid black;
+    max-width: 640px; /* Set a maximum width */
+    max-height: 480px; /* Set a maximum height */
+    border: 2px solid black;
 }
-

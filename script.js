@@ -1,24 +1,20 @@
 const video = document.getElementById('video');
-let stream; // Aggiungiamo una variabile per memorizzare il flusso
 
 async function startCamera() {
     try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
+
+        // Log to check if the stream is set correctly
+        video.onloadedmetadata = function() {
+            console.log('Video stream loaded');
+            video.play(); // Explicitly start the video playback
+        };
     } catch (err) {
-        console.error('Errore nell\'accesso alla fotocamera:', err);
+        console.error('Error accessing the camera:', err);
     }
 }
-
-function stopCamera() {
-    if (stream) {
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-    }
-    video.srcObject = null; // Rimuoviamo il flusso video
-}
-
-document.getElementById('capture').addEventListener('click', stopCamera);
 
 startCamera();
+
 
