@@ -33,6 +33,14 @@ captureButton.addEventListener('click', () => {
     resultDiv.innerHTML = `Colore catturato: ${color}`; // Displays the captured color
     resultDiv.style.backgroundColor = `rgb(${color})`; // Optional: sets the background color
     console.log('Colore catturato:', color); // Logs the captured color
+
+    const nearestRAL = getNearestRALColor(color); // Get nearest RAL code
+    resultDiv.innerHTML = `Colore catturato: ${color} <br> Codice RAL più vicino: ${nearestRAL}`;
+
+    // Set the background color of the colored square
+    colorSquare.style.backgroundColor = `rgb(${color})`; 
+
+    console.log('Colore catturato:', color);
 });
 
 function getDominantColor(imageData) {
@@ -55,6 +63,9 @@ function getDominantColor(imageData) {
 
     return dominantColor; // Restituisce il colore dominante in formato "R,G,B"
 }
+
+const colorSquare = document.getElementById('colorSquare'); // Reference to the colored square
+
 
 
 

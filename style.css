@@ -21,4 +21,10 @@ video {
     background-color: white; /* Default background color */
 }
 
+#colorSquare {
+    margin-top: 20px; /* Add some space above the square */
+    display: inline-block; /* Keeps it inline with other elements */
+}
+
+
 
