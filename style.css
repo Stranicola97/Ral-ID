@@ -17,5 +17,13 @@ body {
     display: inline-block; /* Keeps it inline with other elements */
 }
 
+#video {
+    width: 100%;
+    height: auto;
+    background-color: black; /* In case video is not rendering */
+    margin-top: 20px;
+    display: block;
+}
+
 
 
