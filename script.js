@@ -3,60 +3,64 @@ const captureButton = document.getElementById('capture');
 const resultDiv = document.getElementById('result');
 const colorSquare = document.getElementById('colorSquare');
 
-// Modified constraints for mobile compatibility
+// Video constraints for better mobile compatibility
 const constraints = {
     video: {
-        facingMode: "environment", // Use the rear camera on mobile
+        facingMode: "environment", // Rear camera
         width: { ideal: 640 },
         height: { ideal: 480 }
     }
 };
 
-// Request access to the camera and start the video stream
+// Initialize camera
 function startCamera() {
     navigator.mediaDevices.getUserMedia(constraints)
         .then(stream => {
             video.srcObject = stream;
-
-            // Attempt to play the video explicitly after setting the stream
             video.onloadedmetadata = () => {
                 video.play();
             };
-
-            video.addEventListener('loadeddata', () => {
-                if (video.readyState >= 2) {
-                    video.play(); // Ensure video playback
-                }
-            });
         })
         .catch(err => {
-            console.error("Error accessing the camera: ", err);
+            console.error("Camera access error: ", err);
             alert("Error accessing the camera. Please check permissions.");
         });
 }
 
-// Call the function to start the camera when the page loads
+// Start camera on page load
 startCamera();
 
-// Capture button event listener (same as previous code)
+// Capture button event listener
 captureButton.addEventListener('click', () => {
+    console.log("Capture button clicked");
+
+    if (!video.srcObject) {
+        console.error("Video stream is not active.");
+        return;
+    }
+
+    // Create a canvas to capture the frame
     const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const context = canvas.getContext('2d');
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
+
+    // Get the pixel data from the canvas
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     const color = getDominantColor(imageData);
-    
+
+    console.log("Dominant color (RGB):", color);
+
+    // Find the nearest RAL color
     const nearestRAL = getNearestRALColor(color);
-    resultDiv.innerHTML = `Colore catturato: ${color} <br> Codice RAL più vicino: ${nearestRAL}`;
-    
-    // Set the background color of the colored square
+    resultDiv.innerHTML = `Captured color: rgb(${color}) <br> Nearest RAL code: ${nearestRAL}`;
+
+    // Update the color display square
     colorSquare.style.backgroundColor = `rgb(${color})`;
 });
 
-// Function to get dominant color (same as before)
+// Function to calculate dominant color
 function getDominantColor(imageData) {
     const data = imageData.data;
     let r = 0, g = 0, b = 0, count = 0;
@@ -75,11 +79,20 @@ function getDominantColor(imageData) {
     return `${r},${g},${b}`;
 }
 
-// Function to get nearest RAL color (same as before)
+// Function to find the nearest RAL color
 function getNearestRALColor(capturedColor) {
     const [r, g, b] = capturedColor.split(',').map(Number);
     let nearestRAL = null;
     let minDistance = Infinity;
+
+    const ralColors = [
+        { code: 'RAL 1000', rgb: '162,124,43' },
+        { code: 'RAL 1001', rgb: '169,123,48' },
+        { code: 'RAL 1002', rgb: '175,131,50' },
+        { code: 'RAL 2000', rgb: '85,59,29' },
+        { code: 'RAL 2001', rgb: '150,45,25' }
+        // Add more RAL colors as needed
+    ];
 
     for (const color of ralColors) {
         const [rr, gg, bb] = color.rgb.split(',').map(Number);
