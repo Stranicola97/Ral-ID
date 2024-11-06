@@ -55,7 +55,7 @@ captureButton.addEventListener('click', () => {
     colorSquare.style.backgroundColor = `rgb(${color})`;
 });
 
-// Function to calculate the average RGB color
+// Function to calculate the average RGB color - rivedere???
 function getAverageColor(imageData) {
     const data = imageData.data;
     let r = 0, g = 0, b = 0, count = 0;
