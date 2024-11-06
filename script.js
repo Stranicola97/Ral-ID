@@ -1,4 +1,4 @@
-// Get references to the video and canvas elements
+// Get references to the video and canvas elements **PURE QUI VERSIONE INESISTENTE
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const startCameraButton = document.getElementById('start-camera');
