@@ -53,6 +53,7 @@ h1 {
     width: 100%;
     height: auto;
     display: block;
+    object-fit: contain; /* This ensures the video doesn't scale to full screen */
 }
 
 #color-display {

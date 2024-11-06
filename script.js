@@ -11,7 +11,12 @@ const ctx = canvas.getContext('2d');
 function startCamera() {
     // Check if the browser supports getUserMedia
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
+        // Set video constraints to use rear camera if available
+        const constraints = {
+            video: { facingMode: "environment" }
+        };
+
+        navigator.mediaDevices.getUserMedia(constraints)
             .then(stream => {
                 video.srcObject = stream;
                 video.onloadedmetadata = () => {
