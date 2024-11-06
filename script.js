@@ -1,20 +1,36 @@
 const video = document.getElementById('video');
 const captureButton = document.getElementById('capture');
 const resultDiv = document.getElementById('result');
-const colorSquare = document.getElementById('colorSquare'); // Reference to the colored square
+const colorSquare = document.getElementById('colorSquare');
+
+// Modified constraints for mobile compatibility
+const constraints = {
+    video: {
+        facingMode: "environment", // Use the rear camera on mobile
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+    }
+};
 
 // Request access to the camera
-navigator.mediaDevices.getUserMedia({ video: true })
+navigator.mediaDevices.getUserMedia(constraints)
     .then(stream => {
         video.srcObject = stream;
+        video.play(); // Force the video to play
     })
     .catch(err => {
         console.error("Error accessing the camera: ", err);
+        alert("Error accessing the camera. Please check permissions.");
     });
 
-// RAL color mapping
+// Additional listener to ensure playback on mobile
+video.addEventListener('loadedmetadata', () => {
+    video.play();
+});
+
+// RAL color mapping (same as before)
 const ralColors = [
-    { code: 'RAL 1000', rgb: '162,124,43' }, // Example RAL colors
+    { code: 'RAL 1000', rgb: '162,124,43' },
     { code: 'RAL 1001', rgb: '169,123,48' },
     { code: 'RAL 1002', rgb: '175,131,50' },
     { code: 'RAL 2000', rgb: '85,59,29' },
@@ -22,7 +38,25 @@ const ralColors = [
     // Add more RAL colors as needed
 ];
 
-// Function to get the dominant color from the image data
+// Capture button event listener
+captureButton.addEventListener('click', () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const color = getDominantColor(imageData);
+    
+    const nearestRAL = getNearestRALColor(color);
+    resultDiv.innerHTML = `Colore catturato: ${color} <br> Codice RAL più vicino: ${nearestRAL}`;
+    
+    // Set the background color of the colored square
+    colorSquare.style.backgroundColor = `rgb(${color})`;
+});
+
+// Function to get dominant color (same as before)
 function getDominantColor(imageData) {
     const data = imageData.data;
     let r = 0, g = 0, b = 0, count = 0;
@@ -34,17 +68,16 @@ function getDominantColor(imageData) {
         count++;
     }
 
-    // Average the RGB values
     r = Math.floor(r / count);
     g = Math.floor(g / count);
     b = Math.floor(b / count);
 
-    return `${r},${g},${b}`; // Return as a string "r,g,b"
+    return `${r},${g},${b}`;
 }
 
-// Function to find the nearest RAL color
+// Function to get nearest RAL color (same as before)
 function getNearestRALColor(capturedColor) {
-    const [r, g, b] = capturedColor.split(',').map(Number); // Convert RGB string to numbers
+    const [r, g, b] = capturedColor.split(',').map(Number);
     let nearestRAL = null;
     let minDistance = Infinity;
 
@@ -60,26 +93,5 @@ function getNearestRALColor(capturedColor) {
 
     return nearestRAL;
 }
-
-// Capture button event listener
-captureButton.addEventListener('click', () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const color = getDominantColor(imageData);
-    
-    const nearestRAL = getNearestRALColor(color); // Get nearest RAL code
-    resultDiv.innerHTML = `Colore catturato: ${color} <br> Codice RAL più vicino: ${nearestRAL}`;
-    
-    // Set the background color of the colored square
-    colorSquare.style.backgroundColor = `rgb(${color})`; 
-
-    console.log('Colore catturato:', color);
-});
-
 
 
