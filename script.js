@@ -13,7 +13,11 @@ function startCamera() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Set video constraints to use rear camera if available
         const constraints = {
-            video: { facingMode: "environment" }
+            video: {
+                facingMode: "environment", // Use the rear camera
+                width: { ideal: 1280 },     // Set ideal video width
+                height: { ideal: 720 }      // Set ideal video height
+            }
         };
 
         navigator.mediaDevices.getUserMedia(constraints)
