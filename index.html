@@ -3,18 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Capture</title>
+    <title>RAL Color Identifier</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Identifica il Codice RAL di un Colore</h1>
+    <h1>RAL Color Identifier</h1>
+    
+    <!-- Button to start the camera -->
+    <button id="start-camera">Enable Camera</button>
+    
+    <!-- Video element for displaying camera feed -->
     <video id="video" width="640" height="480" autoplay></video>
-    <button id="capture">Cattura Colore</button>
-    <div id="result"></div> <!-- This div will show the captured color -->
-    <div id="colorSquare" style="width: 100px; height: 100px; border: 1px solid black;"></div> <!-- Colored square -->
+    
+    <!-- Canvas element for capturing the image from the video feed -->
+    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+    
+    <!-- Display captured RGB color as a square -->
+    <div id="color-display">
+        <div id="color-square" style="width: 100px; height: 100px;"></div>
+        <p id="rgb-display">RGB: </p>
+    </div>
+
+    <!-- Button to capture color -->
+    <button id="capture-color">Capture Color</button>
+
     <script src="script.js"></script>
 </body>
 </html>
-
 
 

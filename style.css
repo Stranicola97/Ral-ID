@@ -1,29 +1,17 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-}
-
-#result {
+#color-display {
     margin-top: 20px;
-    font-weight: bold;
-    height: 50px;
-    line-height: 50px; /* Center text vertically */
-    border: 1px solid black; /* Optional border */
-    background-color: white; /* Default background color */
 }
 
-#colorSquare {
-    margin-top: 20px; /* Add some space above the square */
-    display: inline-block; /* Keeps it inline with other elements */
+#color-square {
+    border: 1px solid #000;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-color: #fff; /* Default background */
 }
 
-#video {
-    width: 100%;
-    height: auto;
-    background-color: black; /* In case video is not rendering */
-    margin-top: 20px;
-    display: block;
+#rgb-display {
+    margin-top: 10px;
 }
-
 
 

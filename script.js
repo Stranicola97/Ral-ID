@@ -1,76 +1,50 @@
+// Get references to the video and canvas elements
 const video = document.getElementById('video');
-const captureButton = document.getElementById('capture');
-const resultDiv = document.getElementById('result');
-const colorSquare = document.getElementById('colorSquare');
+const canvas = document.getElementById('canvas');
+const startCameraButton = document.getElementById('start-camera');
 
-// Video constraints for better mobile compatibility
-const constraints = {
-    video: {
-        // facingMode: "environment", // Rear camera ***THIS IS REMOVED FOR TEST***
-        width: { ideal: 640 },
-        height: { ideal: 480 }
-    }
-};
+// Set up a context for the canvas
+const ctx = canvas.getContext('2d');
 
-// Initialize camera
+// Function to start the camera and stream it to the video element
 function startCamera() {
-    navigator.mediaDevices.getUserMedia(constraints)
+    navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
             video.srcObject = stream;
             video.onloadedmetadata = () => {
-                video.play().catch(err =>{
-                    console.rror("Failed to play video on mobile", err);
-            });
+                video.play();
+            };
         })
         .catch(err => {
-            console.error("Camera access error: ", err);
-            alert("Error accessing the camera. Please check permissions.");
+            console.error("Camera access denied", err);
+            alert("Please allow camera access to use this feature.");
         });
 }
 
-// Start camera on page load
-startCamera();
-
-// Capture button event listener
-captureButton.addEventListener('click', () => {
-    if (!video.srcObject) {
-        console.error("Video stream is not active.");
-        return;
-    }
-
-    // Create a canvas to capture the frame
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Get the pixel data from the canvas
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const color = getAverageColor(imageData);
-
-    // Display the RGB color
-    resultDiv.innerHTML = `Captured RGB color: rgb(${color})`;
-
-    // Update the color display square
-    colorSquare.style.backgroundColor = `rgb(${color})`;
+// Event listener for the button to start the camera
+startCameraButton.addEventListener('click', () => {
+    startCamera();
 });
 
-// Function to calculate the average RGB color - rivedere???
-function getAverageColor(imageData) {
-    const data = imageData.data;
-    let r = 0, g = 0, b = 0, count = 0;
+// Function to capture an image from the video and extract RGB
+function captureColor() {
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
 
-    for (let i = 0; i < data.length; i += 4) {
-        r += data[i];
-        g += data[i + 1];
-        b += data[i + 2];
-        count++;
-    }
+    // Get the RGB values from the center of the canvas
+    const x = Math.floor(canvas.width / 2);
+    const y = Math.floor(canvas.height / 2);
+    const index = (y * canvas.width + x) * 4;
 
-    r = Math.floor(r / count);
-    g = Math.floor(g / count);
-    b = Math.floor(b / count);
+    const r = pixels[index];
+    const g = pixels[index + 1];
+    const b = pixels[index + 2];
 
-    return `${r},${g},${b}`;
+    // Display the RGB values and change the square color
+    document.getElementById('rgb-display').textContent = `RGB: (${r}, ${g}, ${b})`;
+    document.getElementById('color-square').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 }
+
+// Add event listener to capture the color when clicking a button
+document.getElementById('capture-color').addEventListener('click', captureColor);
