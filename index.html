@@ -7,24 +7,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>RAL Color Identifier</h1>
-    
-    <!-- Button to start the camera -->
-    <button id="start-camera">Enable Camera</button>
-    
-    <!-- Video element for displaying camera feed -->
-    <video id="video" width="640" height="480" autoplay></video>
-    
-    <!-- Canvas element for capturing the image from the video feed -->
-    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
-    
-    <!-- Button to capture color -->
-    <button id="capture-color">Capture Color</button>
+    <div class="container">
+        <h1>RAL Color Identifier</h1>
 
-    <!-- Display captured RGB color as a square -->
-    <div id="color-display">
-        <div id="color-square" style="width: 100px; height: 100px;"></div>
-        <p id="rgb-display">RGB: </p>
+        <!-- Button to start the camera -->
+        <button id="start-camera" class="btn">Enable Camera</button>
+
+        <!-- Video element for displaying camera feed -->
+        <div class="video-container">
+            <video id="video" width="100%" height="auto" autoplay></video>
+        </div>
+
+        <!-- Canvas element for capturing the image from the video feed -->
+        <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
+        <!-- Button to capture color -->
+        <button id="capture-color" class="btn">Capture Color</button>
+
+        <!-- Display captured RGB color as a square -->
+        <div id="color-display">
+            <div id="color-square" class="color-square"></div>
+            <p id="rgb-display">RGB: </p>
+        </div>
     </div>
 
     <script src="script.js"></script>

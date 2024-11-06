@@ -9,17 +9,22 @@ const ctx = canvas.getContext('2d');
 
 // Function to start the camera and stream it to the video element
 function startCamera() {
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-            video.srcObject = stream;
-            video.onloadedmetadata = () => {
-                video.play();
-            };
-        })
-        .catch(err => {
-            console.error("Camera access denied", err);
-            alert("Please allow camera access to use this feature.");
-        });
+    // Check if the browser supports getUserMedia
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    video.play();
+                };
+            })
+            .catch(err => {
+                console.error("Camera access denied", err);
+                alert("Please allow camera access to use this feature.");
+            });
+    } else {
+        alert("Camera not supported by your browser.");
+    }
 }
 
 // Event listener for the button to start the camera
@@ -29,7 +34,10 @@ startCameraButton.addEventListener('click', () => {
 
 // Function to capture an image from the video and extract RGB
 function captureColor() {
+    // Draw the current frame from the video to the canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Get pixel data from the canvas
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const pixels = imageData.data;
 
