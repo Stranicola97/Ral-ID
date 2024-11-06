@@ -2,6 +2,7 @@
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const startCameraButton = document.getElementById('start-camera');
+const captureColorButton = document.getElementById('capture-color');
 
 // Set up a context for the canvas
 const ctx = canvas.getContext('2d');
@@ -47,4 +48,4 @@ function captureColor() {
 }
 
 // Add event listener to capture the color when clicking a button
-document.getElementById('capture-color').addEventListener('click', captureColor);
+captureColorButton.addEventListener('click', captureColor);
