@@ -12,33 +12,33 @@ const constraints = {
     }
 };
 
-// Request access to the camera
-navigator.mediaDevices.getUserMedia(constraints)
-    .then(stream => {
-        video.srcObject = stream;
-        video.play(); // Force the video to play
-    })
-    .catch(err => {
-        console.error("Error accessing the camera: ", err);
-        alert("Error accessing the camera. Please check permissions.");
-    });
+// Request access to the camera and start the video stream
+function startCamera() {
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+            video.srcObject = stream;
 
-// Additional listener to ensure playback on mobile
-video.addEventListener('loadedmetadata', () => {
-    video.play();
-});
+            // Attempt to play the video explicitly after setting the stream
+            video.onloadedmetadata = () => {
+                video.play();
+            };
 
-// RAL color mapping (same as before)
-const ralColors = [
-    { code: 'RAL 1000', rgb: '162,124,43' },
-    { code: 'RAL 1001', rgb: '169,123,48' },
-    { code: 'RAL 1002', rgb: '175,131,50' },
-    { code: 'RAL 2000', rgb: '85,59,29' },
-    { code: 'RAL 2001', rgb: '150,45,25' },
-    // Add more RAL colors as needed
-];
+            video.addEventListener('loadeddata', () => {
+                if (video.readyState >= 2) {
+                    video.play(); // Ensure video playback
+                }
+            });
+        })
+        .catch(err => {
+            console.error("Error accessing the camera: ", err);
+            alert("Error accessing the camera. Please check permissions.");
+        });
+}
 
-// Capture button event listener
+// Call the function to start the camera when the page loads
+startCamera();
+
+// Capture button event listener (same as previous code)
 captureButton.addEventListener('click', () => {
     const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
@@ -93,5 +93,3 @@ function getNearestRALColor(capturedColor) {
 
     return nearestRAL;
 }
-
-
