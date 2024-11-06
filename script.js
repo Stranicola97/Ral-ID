@@ -6,7 +6,7 @@ const colorSquare = document.getElementById('colorSquare');
 // Video constraints for better mobile compatibility
 const constraints = {
     video: {
-        facingMode: "environment", // Rear camera
+        // facingMode: "environment", // Rear camera ***THIS IS REMOVED FOR TEST***
         width: { ideal: 640 },
         height: { ideal: 480 }
     }
@@ -18,8 +18,9 @@ function startCamera() {
         .then(stream => {
             video.srcObject = stream;
             video.onloadedmetadata = () => {
-                video.play();
-            };
+                video.play().catch(err =>{
+                    console.rror("Failed to play video on mobile", err);
+            });
         })
         .catch(err => {
             console.error("Camera access error: ", err);
