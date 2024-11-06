@@ -32,8 +32,6 @@ startCamera();
 
 // Capture button event listener
 captureButton.addEventListener('click', () => {
-    console.log("Capture button clicked");
-
     if (!video.srcObject) {
         console.error("Video stream is not active.");
         return;
@@ -48,20 +46,17 @@ captureButton.addEventListener('click', () => {
 
     // Get the pixel data from the canvas
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const color = getDominantColor(imageData);
+    const color = getAverageColor(imageData);
 
-    console.log("Dominant color (RGB):", color);
-
-    // Find the nearest RAL color
-    const nearestRAL = getNearestRALColor(color);
-    resultDiv.innerHTML = `Captured color: rgb(${color}) <br> Nearest RAL code: ${nearestRAL}`;
+    // Display the RGB color
+    resultDiv.innerHTML = `Captured RGB color: rgb(${color})`;
 
     // Update the color display square
     colorSquare.style.backgroundColor = `rgb(${color})`;
 });
 
-// Function to calculate dominant color
-function getDominantColor(imageData) {
+// Function to calculate the average RGB color
+function getAverageColor(imageData) {
     const data = imageData.data;
     let r = 0, g = 0, b = 0, count = 0;
 
@@ -77,32 +72,4 @@ function getDominantColor(imageData) {
     b = Math.floor(b / count);
 
     return `${r},${g},${b}`;
-}
-
-// Function to find the nearest RAL color
-function getNearestRALColor(capturedColor) {
-    const [r, g, b] = capturedColor.split(',').map(Number);
-    let nearestRAL = null;
-    let minDistance = Infinity;
-
-    const ralColors = [
-        { code: 'RAL 1000', rgb: '162,124,43' },
-        { code: 'RAL 1001', rgb: '169,123,48' },
-        { code: 'RAL 1002', rgb: '175,131,50' },
-        { code: 'RAL 2000', rgb: '85,59,29' },
-        { code: 'RAL 2001', rgb: '150,45,25' }
-        // Add more RAL colors as needed
-    ];
-
-    for (const color of ralColors) {
-        const [rr, gg, bb] = color.rgb.split(',').map(Number);
-        const distance = Math.sqrt((r - rr) ** 2 + (g - gg) ** 2 + (b - bb) ** 2);
-
-        if (distance < minDistance) {
-            minDistance = distance;
-            nearestRAL = color.code;
-        }
-    }
-
-    return nearestRAL;
 }
