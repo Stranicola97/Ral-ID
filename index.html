@@ -3,37 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAL Color Identifier</title>
+    <title>RAL Color Finder</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>RAL Color Identifier</h1>
-
-        <!-- Button to start the camera -->
-        <button id="start-camera" class="btn">Enable Camera</button>
-
-        <!-- Video element for displaying camera feed -->
-        <div class="video-container">
-            <video id="video" autoplay playsinline webkit-playsinline></video>
-        </div>
-
-        <!-- Canvas element for capturing the image from the video feed -->
-        <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
-
-        <!-- Button to capture color -->
-        <button id="capture-color" class="btn">Capture Color</button>
-
-        <!-- Display captured RGB color as a square -->
-        <div id="color-display">
-            <div id="color-square" class="color-square"></div>
-            <p id="rgb-display">RGB: </p>
-        <!--Display RAL color-->
-        <div id="ral-display"></div>
-        </div>
+    <h1>RAL Color Finder</h1>
+    <div id="video-container">
+        <video id="video" autoplay playsinline></video>
     </div>
-
+    <button id="capture-color">Capture Color</button>
+    <div id="color-display">
+        <div id="color-square"></div>
+        <p id="rgb-display"></p>
+        <p id="ral-display"></p>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
-
